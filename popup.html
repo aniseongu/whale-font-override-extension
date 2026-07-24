@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>폰트 오버라이드</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, "Malgun Gothic", sans-serif;
+    width: 280px;
+    padding: 14px;
+    margin: 0;
+    color: #222;
+  }
+  h1 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  .host {
+    font-size: 13px;
+    color: #333;
+    word-break: break-all;
+    margin-bottom: 8px;
+    padding: 6px 8px;
+    background: #f2f2f2;
+    border-radius: 6px;
+  }
+  .status {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  button {
+    display: block;
+    width: 100%;
+    padding: 9px;
+    font-size: 13px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+  }
+  #toggleBtn.on { background: #ffe1e1; color: #b3261e; }
+  #toggleBtn.off { background: #e1f0ff; color: #1a56b0; }
+  #optionsBtn { background: #eee; color: #333; }
+  #toggleBtn:disabled { background: #eee; color: #999; cursor: default; }
+</style>
+</head>
+<body>
+  <h1>Pretendard + D2Coding 폰트 오버라이드</h1>
+  <div class="host" id="hostLabel">확인 중...</div>
+  <div class="status" id="statusLabel"></div>
+  <button id="toggleBtn" disabled>확인 중...</button>
+  <button id="optionsBtn">전체 제외 목록 관리</button>
+  <script src="common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
