@@ -1,10 +1,16 @@
 {
   "manifest_version": 3,
   "name": "Pretendard + D2Coding Font Override",
-  "version": "1.1.0",
+  "version": "1.1.3",
   "description": "Force normal webpage text to Pretendard and code/monospace areas to D2Coding on HTTP/HTTPS pages, with a per-site exclude list for pages where the override should not run.",
   "permissions": ["scripting", "tabs", "storage"],
   "host_permissions": ["http://*/*", "https://*/*"],
+  "web_accessible_resources": [
+    {
+      "resources": ["font-override.css"],
+      "matches": ["http://*/*", "https://*/*"]
+    }
+  ],
   "background": {
     "service_worker": "background.js"
   },

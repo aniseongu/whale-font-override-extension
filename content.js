@@ -8,6 +8,45 @@
   "use strict";
 
   const STYLE_ID = "wf-font-override-style";
+  const FONT_OVERRIDE_CSS = String.raw`
+:root {
+  --wf-sans: "Pretendard", "Pretendard Variable", "Noto Sans KR", "Malgun Gothic", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --wf-mono: "D2Coding ligature", "D2Coding", "Cascadia Mono", "Consolas", "Courier New", monospace;
+}
+
+:where(html, body, body *):not(:where(
+  pre, pre *, code, code *, kbd, kbd *, samp, samp *, tt, tt *, var, var *,
+  textarea.code, textarea[class*="code"], textarea[class*="Code"],
+  svg, svg *, canvas, math, math *,
+  .monaco-editor, .monaco-editor *, .cm-editor, .cm-editor *,
+  .CodeMirror, .CodeMirror *, .ace_editor, .ace_editor *,
+  [class*="hljs"], [class*="language-"], [class*="token"],
+  [class*="material-icons"], [class*="material-symbols"], [class*="MaterialIcons"],
+  [class*="icon"], [class*="Icon"], [class^="fa"], [class*=" fa"],
+  .fa, .fas, .far, .fab, .glyphicon, [role="img"], [aria-hidden="true"]
+)) {
+  font-family: var(--wf-sans) !important;
+}
+
+:where(
+  pre, pre *, code, code *, kbd, kbd *, samp, samp *, tt, tt *, var, var *,
+  textarea.code, textarea[class*="code"], textarea[class*="Code"],
+  .monaco-editor, .monaco-editor *, .cm-editor, .cm-editor *,
+  .CodeMirror, .CodeMirror *, .ace_editor, .ace_editor *,
+  [class*="hljs"], [class*="language-"]
+) {
+  font-family: var(--wf-mono) !important;
+}
+
+:where(
+  .material-icons, .material-icons-outlined, .material-icons-round,
+  .material-icons-rounded, .material-icons-sharp,
+  .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp,
+  [class*="material-icons"], [class*="material-symbols"]
+) {
+  font-family: "Material Icons", "Material Symbols Outlined", "Material Symbols Rounded", "Material Symbols Sharp" !important;
+}
+`;
 
   let applied = false;
   let mainStyleEl = null;
@@ -17,7 +56,7 @@
 
   function getCssText() {
     if (!cssTextPromise) {
-      cssTextPromise = fetch(chrome.runtime.getURL("font-override.css")).then((res) => res.text());
+      cssTextPromise = Promise.resolve(FONT_OVERRIDE_CSS);
     }
     return cssTextPromise;
   }
@@ -112,6 +151,10 @@
     await enable();
   }
 
+  function reportError(error) {
+    console.error("[Font Override] Failed to apply stylesheet:", error);
+  }
+
   // If the user adds/removes this site from the exclude list (via the
   // popup or the options page) while the page is already open, reflect it
   // immediately instead of requiring a reload.
@@ -122,9 +165,9 @@
     if (nowExcluded) {
       removeFromDocument();
     } else if (!applied) {
-      enable();
+      enable().catch(reportError);
     }
   });
 
-  init();
+  init().catch(reportError);
 })();
